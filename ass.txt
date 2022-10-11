@@ -1,0 +1,153 @@
+List<Contact> contlist = new List<Contact>();
+	contlist.add(new Contact(FirstName='Mohan', LastName='Wanjari',Department='Finance'));
+	contlist.add(new Contact(FirstName='Shivansh', LastName='Wanjari',Department='Education'));
+	contlist.add(new Contact(FirstName='Ranu', LastName='Wanjari',Department='Home'));
+	contlist.add(new Contact(FirstName='Bharati', LastName='Ashtankar',Department='Home'));
+
+Insert contlist;
+
+List<Contact> updatelist = new List<Contact>();
+
+for(Contact contra : contlist){
+	if(contra.Department='Finance'){
+		contra.Title='Finance Analyst';
+		
+		updatelist.add(contra);
+	}
+}
+
+update updatelist;
+
+---------------------------------------------------------------
+
+List<Contact> contlist = new List<Contact>{
+new Contact(FirstName='Mohan', LastName='Wanjari',Department='Finance'),
+new Contact(FirstName='Shivansh', LastName='Wanjari',Department='Education'),
+new Contact(FirstName='Ranu', LastName='Wanjari',Department='Home'),
+new Contact(FirstName='Bharati', LastName='Ashtankar',Department='Home'),
+};
+
+--------------------------------------------------------------------------------
+2)
+
+josh = to update
+
+kathy = to insert
+
+Contact cont = new Contact(Name='Josh', Phone='123456789', Department='Finance');
+
+insert cont;
+
+cont.Department='josh record has been updated by the upsert operation';
+
+Contact kathy = new Contact(Name='kathy', Phone='123456000', Department='Education');
+
+
+List<Contact> canti = new List<Contact>{cont, kathy};
+
+upsert canti;
+
+---------------------------------------------------------------------------------------
+
+3)Exception handling
+
+try{
+
+Account acc = new Account();
+
+insert acc;
+
+}
+
+catch(DmlException e)
+{
+	
+	system.debug('A Dml Exception has occured'+ e.getMessage());
+}
+
+----------------------------------------------------------------------------------------------
+
+4)
+
+List<Contact> conlist = new List<Contact>{
+    						new Contact(FirstName='Jaggu', LastName='Baman1', Phone='2345678000'),
+    						new Contact(FirstName='Joseph', LastName='Play', Phone='2342231234'),
+    						new Contact(FirstName='Chinki', LastName='Sahil', Phone='1111111222'),
+                            			new Contact()};
+                                
+                                
+ Database.SaveResult[] dbs = Database.insert(conlist, false);                                
+
+	for(Database.SaveResult svr : dbs){
+    
+    if(svr.isSuccess()) {
+        
+        System.debug('Sucessfully inserted' + svr.getId());
+    }
+    
+    else{
+        
+        for(Database.Error err : svr.getErrors()) {
+            
+            System.debug('following error has occured');
+            System.debug(err.getStatusCode() +': '+ err.getMessage());
+            System.debug('Error in Field' + err.getFields());
+        }
+        
+        
+    }
+ }
+------------------------------------------------------------------------------------------------------------------
+
+update Records through Database Method
+
+
+List<Contact> conlist = [SELECT Id, FirstName, LastName, Phone, Department FROM Contact WHERE Department ='Finance'];
+
+List<Contact> conUpdated = new List<Contact>();
+
+for(Contact co: conlist){
+    
+    if(co.Department =='Finance'){
+        
+        co.Department ='Music';
+        
+        conUpdated.add(co);
+    }
+}
+
+Database.SaveResult[] svr = Database.update(conUpdated, false);
+                          
+for(Database.SaveResult sr : svr){
+    
+    if(sr.isSuccess()){
+        
+        system.debug('Records are sucessfully updated '+sr.getId());
+    }
+    
+    else{
+        
+        for(Database.Error err :sr.getErrors()){
+            
+            system.debug('Following Errors are found');
+            system.debug(err.getStatusCode()+': '+err.getMessage());
+            system.debug('Field Error'+err.getFields());
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
